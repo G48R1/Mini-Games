@@ -1,9 +1,10 @@
-// const repoBase = "/Mini-Games/";
-const repoBase = "";
+const repoBase = "/Mini-Games/"
 
 // --- Setup canvas ---
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+canvas.width = 480;
+canvas.height = 640;
 
 // --- Load sprites ---
 const spaceshipImg = new Image();
@@ -19,32 +20,23 @@ const restartBtn = document.getElementById("restartBtn");
 
 // --- Oggetti di gioco ---
 const spaceship = {
-  x: 0,
-  y: 0,
+  x: canvas.width / 2 - 25,
+  y: canvas.height - 70,
   width: 50,
   height: 50,
-  speed: 5,
-  speed_dt: 2,
-  speed_mb: 5
+  speed: 1
 };
 
-// resize dimensioni iniziali
+// resize dimensioni
 resizeCanvas();
+
+// aggiorna se cambia dimensione finestra
 window.addEventListener("resize", resizeCanvas);
 
-// function resizeCanvas() {
-//   canvas.width = window.innerWidth > 480 ? 480 : window.innerWidth - 10; // max 480px
-//   canvas.height = window.innerHeight - 4;
-//   spaceship.x = canvas.width / 2 - spaceship.width / 2;
-//   spaceship.y = canvas.height - 70;
-// }
 function resizeCanvas() {
-  const vw = window.innerWidth;
-  const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-
-  canvas.width = vw > 480 ? 480 : vw;
-  canvas.height = vh;
-
+  canvas.width = window.innerWidth > 480 ? 480 : window.innerWidth - 10; // max 480px
+  canvas.height = window.innerHeight - 4;
+  // riposiziona navicella al centro se necessario
   spaceship.x = canvas.width / 2 - spaceship.width / 2;
   spaceship.y = canvas.height - 70;
 }
@@ -56,7 +48,7 @@ let score = 0;
 let gameOver = false;
 let highScore = 0;
 
-// --- Input tastiera ---
+// --- Input ---
 document.addEventListener("keydown", e => { keys[e.key] = true; });
 document.addEventListener("keyup", e => { keys[e.key] = false; });
 
@@ -67,21 +59,11 @@ const rightBtn = document.getElementById("rightBtn");
 let moveLeft = false;
 let moveRight = false;
 
-function setupTouch(btn, direction) {
-  btn.addEventListener("touchstart", e => {
-    e.preventDefault();
-    if (direction === "left") moveLeft = true;
-    if (direction === "right") moveRight = true;
-  });
-  btn.addEventListener("touchend", e => {
-    e.preventDefault();
-    if (direction === "left") moveLeft = false;
-    if (direction === "right") moveRight = false;
-  });
-}
+leftBtn.addEventListener("touchstart", () => moveLeft = true);
+leftBtn.addEventListener("touchend", () => moveLeft = false);
 
-setupTouch(leftBtn, "left");
-setupTouch(rightBtn, "right");
+rightBtn.addEventListener("touchstart", () => moveRight = true);
+rightBtn.addEventListener("touchend", () => moveRight = false);
 
 // --- Funzioni ---
 function spawnMeteor() {
@@ -119,19 +101,18 @@ setInterval(() => {
 function update() {
   if (gameOver) return;
 
-  // Movimento (tastiera o touch)
-  if (keys["ArrowLeft"] && spaceship.x > 0) {
-    spaceship.x -= spaceship.speed_dt;
+  // Movimento navicella
+  if (keys["ArrowLeft"] && spaceship.x > 0) spaceship.x -= spaceship.speed;
+  if (keys["ArrowRight"] && spaceship.x + spaceship.width < canvas.width) spaceship.x += spaceship.speed;
+
+  // Movimento navicella (tastiera o touch)
+  if ((keys["ArrowLeft"] || moveLeft) && spaceship.x > 0) {
+    spaceship.x -= spaceship.speed;
   }
-  if (moveLeft && spaceship.x > 0) {
-    spaceship.x -= spaceship.speed_mb;
+  if ((keys["ArrowRight"] || moveRight) && spaceship.x + spaceship.width < canvas.width) {
+    spaceship.x += spaceship.speed;
   }
-  if (keys["ArrowRight"] && spaceship.x + spaceship.width < canvas.width) {
-    spaceship.x += spaceship.speed_dt;
-  }
-  if (moveRight && spaceship.x + spaceship.width < canvas.width) {
-    spaceship.x += spaceship.speed_mb;
-  }
+
 
   // Aggiorna proiettili
   bullets.forEach((b, i) => {
@@ -143,7 +124,7 @@ function update() {
   meteors.forEach((m, i) => {
     m.y += m.speed;
     if (m.y > canvas.height) {
-      gameOver = false;
+      gameOver = false; // meteorite arriva in fondo
     }
   });
 
@@ -167,7 +148,7 @@ function update() {
   });
 
   // Collisione meteorite → navicella
-  meteors.forEach(m => {
+  meteors.forEach((m) => {
     if (
       spaceship.x < m.x + m.width &&
       spaceship.x + spaceship.width > m.x &&
@@ -186,16 +167,25 @@ function draw() {
   ctx.drawImage(spaceshipImg, spaceship.x, spaceship.y, spaceship.width, spaceship.height);
 
   // Disegna proiettili
-  bullets.forEach(b => ctx.drawImage(bulletImg, b.x, b.y, b.width, b.height));
+  bullets.forEach(b => {
+    ctx.drawImage(bulletImg, b.x, b.y, b.width, b.height);
+  });
 
   // Disegna meteoriti
-  meteors.forEach(m => ctx.drawImage(meteorImg, m.x, m.y, m.width, m.height));
+  meteors.forEach(m => {
+    ctx.drawImage(meteorImg, m.x, m.y, m.width, m.height);
+  });
 
   // Punteggio
   ctx.fillStyle = "white";
   ctx.font = "20px Arial";
   ctx.fillText("Score: " + score, 10, 30);
+
+  ctx.fillStyle = "white";
+  ctx.font = "20px Arial";
+  ctx.fillText("Score: " + score, 10, 30);
   ctx.fillText("High Score: " + highScore, 10, 60);
+
 
   if (gameOver) {
     ctx.fillStyle = "red";
@@ -206,6 +196,7 @@ function draw() {
     ctx.font = "20px Arial";
     ctx.fillText("Final Score: " + score, canvas.width / 2 - 70, canvas.height / 2 + 70);
 
+    // Mostra il bottone
     restartBtn.style.display = "block";
   } else {
     restartBtn.style.display = "none";
@@ -219,7 +210,12 @@ function gameLoop() {
 }
 
 function restartGame() {
-  if (score > highScore) highScore = score;
+  // aggiorna high score se necessario
+  if (score > highScore) {
+    highScore = score;
+  }
+
+  // reset stato
   spaceship.x = canvas.width / 2 - spaceship.width / 2;
   spaceship.y = canvas.height - 70;
   bullets.length = 0;
@@ -228,6 +224,29 @@ function restartGame() {
   gameOver = false;
 }
 
+// if (gameOver) {
+//   ctx.fillStyle = "red";
+//   ctx.font = "40px Arial";
+//   ctx.fillText("GAME OVER", canvas.width / 2 - 120, canvas.height / 2);
+
+//   ctx.fillStyle = "white";
+//   ctx.font = "20px Arial";
+//   ctx.fillText("Premi R per restart", canvas.width / 2 - 100, canvas.height / 2 + 40);
+
+//   // Mostra il bottone
+//   restartBtn.style.display = "block";
+// } else {
+//   restartBtn.style.display = "none";
+// }
+
 restartBtn.addEventListener("click", restartGame);
+
+// document.addEventListener("keydown", e => {
+//   keys[e.key] = true;
+//   if (gameOver && e.key.toLowerCase() === "r") {
+//     restartGame();
+//   }
+// });
+
 
 gameLoop();
