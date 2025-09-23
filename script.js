@@ -1,5 +1,5 @@
-// const repoBase = "/Mini-Games/";
-const repoBase = "";
+const repoBase = "/Mini-Games/";
+// const repoBase = "";
 
 // --- Setup canvas ---
 const canvas = document.getElementById("gameCanvas");
