@@ -1,4 +1,4 @@
-body {
+/* body {
   margin: 0;
   background: black;
   display: flex;
@@ -6,14 +6,26 @@ body {
   align-items: center;
   width: 100%;
   height: 100%;
-  /* box-sizing: border-box; */
   overflow: unset;
+} */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 #gameCanvas {
   background: #000;
   border: 2px solid white;
   display: block;
+  max-width: 100vw;
+  max-height: 100vh;
 }
 
 #mobileControls {
@@ -23,6 +35,7 @@ body {
   display: flex;
   justify-content: space-between;
   padding: 0 40px;
+  pointer-events: auto;
 }
 
 /* Nascondi i pulsanti di default */
@@ -35,9 +48,9 @@ body {
   #mobileControls {
     display: flex;
   }
-  body {
+  /* body {
     margin-left: 2em;
-  }
+  } */
 }
 #mobileControls button {
   width: 60px;

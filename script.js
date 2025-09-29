@@ -1,5 +1,5 @@
-const repoBase = "/Mini-Games/";
-// const repoBase = "";
+// const repoBase = "/Mini-Games/";
+const repoBase = "";
 
 // --- Setup canvas ---
 const canvas = document.getElementById("gameCanvas");
@@ -54,7 +54,7 @@ const meteors = [];
 let keys = {};
 let score = 0;
 let gameOver = false;
-let highScore = 0;
+let highScore = parseInt(localStorage.getItem("highScore")) || 0;
 
 // --- Input tastiera ---
 document.addEventListener("keydown", e => { keys[e.key] = true; });
@@ -219,7 +219,10 @@ function gameLoop() {
 }
 
 function restartGame() {
-  if (score > highScore) highScore = score;
+  if (score > highScore) {
+    highScore = score;
+    localStorage.setItem("highScore", highScore);
+  }
   spaceship.x = canvas.width / 2 - spaceship.width / 2;
   spaceship.y = canvas.height - 70;
   bullets.length = 0;
