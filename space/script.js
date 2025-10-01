@@ -1,6 +1,6 @@
-let repoBase = "";
+let repoBase = ".";
 // repoBase = repoBase + ".";
-repoBase = repoBase + "/Mini-Games/";
+// repoBase = repoBase + "/Mini-Games/";
 
 // const repoBase = "/space";
 // repoBase = repoBase + "/Mini-Games";
