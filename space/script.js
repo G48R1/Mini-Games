@@ -1,4 +1,4 @@
-let repoBase = ".";
+let repoBase = "";
 // repoBase = repoBase + ".";
 repoBase = repoBase + "/Mini-Games/";
 
