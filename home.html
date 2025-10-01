@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menù Minigiochi</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at center, #0b0c10, #1f2833);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .menu {
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+      color: #66fcf1;
+    }
+
+    .games {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .game-card {
+      background: #1f2833;
+      border: 2px solid #45a29e;
+      border-radius: 15px;
+      padding: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px rgba(102, 252, 241, 0.8);
+    }
+
+    .game-title {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #66fcf1;
+    }
+
+    .play-button {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #45a29e;
+      color: #0b0c10;
+      font-weight: bold;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+
+    .play-button:hover {
+      background: #66fcf1;
+    }
+  </style>
+</head>
+<body>
+  <div class="menu">
+    <h1>🎮 Menù Minigiochi</h1>
+    <div class="games">
+      
+      <!-- Gioco 1 -->
+      <div class="game-card">
+        <div class="game-title">🚀 Space Shooter</div>
+        <p>Pilota la navicella e distruggi i meteoriti!</p>
+        <a href="/space/index.html" class="play-button">Gioca</a>
+      </div>
+      
+      <!-- Qui aggiungerai altri giochi -->
+      <!--
+      <div class="game-card">
+        <div class="game-title">🏃‍♂️ Runner</div>
+        <p>Evita gli ostacoli e corri più lontano che puoi!</p>
+        <a href="runner.html" class="play-button">Gioca</a>
+      </div>
+      -->
+
+    </div>
+  </div>
+</body>
+</html>

@@ -1,5 +1,10 @@
-const repoBase = "/Mini-Games/";
-// const repoBase = "";
+let repoBase = ".";
+// repoBase = repoBase + ".";
+repoBase = repoBase + "/Mini-Games/";
+
+// const repoBase = "/space";
+// repoBase = repoBase + "/Mini-Games";
+
 
 // --- Setup canvas ---
 const canvas = document.getElementById("gameCanvas");
@@ -207,6 +212,11 @@ function draw() {
     ctx.fillText("Final Score: " + score, canvas.width / 2 - 70, canvas.height / 2 + 70);
 
     restartBtn.style.display = "block";
+
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem("highScore", highScore);
+    }
   } else {
     restartBtn.style.display = "none";
   }
@@ -219,10 +229,10 @@ function gameLoop() {
 }
 
 function restartGame() {
-  if (score > highScore) {
-    highScore = score;
-    localStorage.setItem("highScore", highScore);
-  }
+  // if (score > highScore) {
+  //   highScore = score;
+  //   localStorage.setItem("highScore", highScore);
+  // }
   spaceship.x = canvas.width / 2 - spaceship.width / 2;
   spaceship.y = canvas.height - 70;
   bullets.length = 0;
